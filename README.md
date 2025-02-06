@@ -1,36 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Stock Market Game
+
+## Overview
+
+This project is a small "serious game" developed for a bank to educate users about the basics and risks of stock trading in a playful way. The game simulates a stock market environment where users can experience stock trading, including the potential for market crashes.
+
+## Features
+
+### User Authentication
+
+- **Registration**: Users can create an account to participate in the game.
+- **Login**: Users can log in to access their account and continue their trading activities.
+- **Logout**: Users can log out, which clears their session and removes their details from local storage.
+
+### Trading Functionality
+
+- **Depot Holdings**: Displays the user's current play money balance, current profit/loss, current depot holdings, and the number of shares owned.
+- **Share Price Overview**: Shows the prices of the ten tradable shares.
+- **Detailed Share View**: Provides detailed information about a share, including prices from the last ten days.
+- **Order Book**: Displays all purchases and sales made by the user.
+
+### Stock Market Crash Simulation
+
+- **Market Volatility Alert**: When the market becomes volatile and poses a risk of crashing, an alert is displayed on the screen.
+- **User Decision**: The alert provides buttons for users to either sell their stocks or hold them, allowing them to make strategic decisions during market volatility.
+
+## Tech Stack
+
+- **Frontend**: React, Next.js
+- **Backend**: PHP
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Node.js
+- npm or yarn
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/your-repo/privatbank-mustermann.git
+   ```
+2. Navigate to the project directory:
+   ```sh
+   cd privatbank-mustermann
+   ```
+3. Install dependencies:
+   ```sh
+   npm install
+   ```
+   or
+   ```sh
+   yarn install
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Running the Application
 
-## Learn More
+1. Start the development server:
+   ```sh
+   npm run dev
+   ```
+   or
+   ```sh
+   yarn dev
+   ```
+2. Open your browser and navigate to `http://localhost:3000`.
 
-To learn more about Next.js, take a look at the following resources:
+## Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **components**: Contains reusable UI components such as buttons, navigation menus, and stock-related components.
+- **hooks**: Custom hooks for managing authentication and other stateful logic.
+- **pages**: Next.js pages for different routes, including the trading page and authentication pages.
+- **utils**: Utility functions for various calculations and formatting.
+- **types**: TypeScript types for defining the shape of data used in the application.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Authentication
 
-## Deploy on Vercel
+The application uses basic authentication without sessions or tokens. User details are stored in local storage to persist login state. When a user logs in, their details are saved in local storage, and when they log out, the details are cleared.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Protecting Routes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The trading route is protected to ensure only authenticated users can access it. If a user is not logged in, they are redirected to the login page.
+
+## Stock Market Simulation
+
+The game simulates stock trading with the following features:
+
+- **Stock Price Updates**: Stock prices are updated at regular intervals, with a small chance of a market crash.
+- **Market Crash Alert**: When a market crash is imminent, an alert is displayed, allowing users to decide whether to sell their stocks or hold them.
+- **Trading Actions**: Users can buy and sell shares, with their actions reflected in their depot holdings and order book.
+
+## Conclusion
+
+This project provides an educational and interactive way for users to learn about stock trading and the risks involved. By simulating a stock market environment, users can experience the dynamics of trading and make strategic decisions during market volatility.
