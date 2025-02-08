@@ -1,13 +1,6 @@
 "use server";
-
-import { redirect } from "next/navigation";
 import { z } from "zod";
 import type { LoginResponse } from "@/types/auth";
-
-console.log(
-  "process.env.NEXT_PUBLIC_API_BASE_URL:",
-  process.env.NEXT_PUBLIC_API_BASE_URL
-);
 
 const SignupSchema = z
   .object({
