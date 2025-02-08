@@ -51,10 +51,6 @@ export async function signup(prevState: any, formData: FormData) {
   // await new Promise((resolve) => setTimeout(resolve, 1000));
   const { step, name, email, password, dob, postalCode } = validatedFields.data;
 
-  console.log(
-    "process.env.NEXT_PUBLIC_API_BASE_URL:",
-    process.env.NEXT_PUBLIC_API_BASE_URL
-  );
   try {
     // Here you would typically make an API call to create the user
     const response = await fetch(
