@@ -26,8 +26,22 @@ This project is a small "serious game" developed for a bank to educate users abo
 
 ## Tech Stack
 
-- **Frontend**: React, Next.js
-- **Backend**: PHP
+### Frontend
+
+- **React**: A JavaScript library for building user interfaces.
+- **TypeScript**: A superset of JavaScript that adds static types.
+
+### Backend
+
+- **PHP**: A server-side scripting language.
+- **MySQL**: A relational database management system.
+- **XAMPP**: A free and open-source cross-platform web server solution stack package developed by Apache Friends, consisting mainly of the Apache HTTP Server, MariaDB database, and interpreters for scripts written in the PHP and Perl programming languages.
+
+### Commands
+
+- **Start Development Server**: `npm run dev` or `yarn dev`
+- **Build for Production**: `npm run build` or `yarn build`
+- **Start Production Server**: `npm start` or `yarn start`
 
 ## Getting Started
 
@@ -35,6 +49,7 @@ This project is a small "serious game" developed for a bank to educate users abo
 
 - Node.js
 - npm or yarn
+- XAMPP
 
 ### Installation
 
@@ -48,12 +63,16 @@ This project is a small "serious game" developed for a bank to educate users abo
    ```
 3. Install dependencies:
    ```sh
-   npm install
+   npm install --legacy-peer-deps
    ```
    or
    ```sh
-   yarn install
+   yarn install --legacy-peer-deps
    ```
+4. Set up XAMPP:
+   - Download and install XAMPP from [Apache Friends](https://www.apachefriends.org/index.html).
+   - Start Apache and MySQL from the XAMPP control panel.
+   - Configure your PHP and MySQL settings as needed.
 
 ### Running the Application
 
@@ -71,9 +90,18 @@ This project is a small "serious game" developed for a bank to educate users abo
 
 - **components**: Contains reusable UI components such as buttons, navigation menus, and stock-related components.
 - **hooks**: Custom hooks for managing authentication and other stateful logic.
-- **pages**: Next.js pages for different routes, including the trading page and authentication pages.
 - **utils**: Utility functions for various calculations and formatting.
 - **types**: TypeScript types for defining the shape of data used in the application.
+
+## Contributors
+
+We welcome contributions from the community! If you would like to contribute, please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/YourFeature`).
+3. Commit your changes (`git commit -m 'Add some feature'`).
+4. Push to the branch (`git push origin feature/YourFeature`).
+5. Open a pull request.
 
 ## Authentication
 
