@@ -4,6 +4,11 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import type { LoginResponse } from "@/types/auth";
 
+console.log(
+  "process.env.NEXT_PUBLIC_API_BASE_URL:",
+  process.env.NEXT_PUBLIC_API_BASE_URL
+);
+
 const SignupSchema = z
   .object({
     step: z.number(),
@@ -53,10 +58,15 @@ export async function signup(prevState: any, formData: FormData) {
   // await new Promise((resolve) => setTimeout(resolve, 1000));
   const { step, name, email, password, dob, postalCode } = validatedFields.data;
 
+  console.log(
+    "process.env.NEXT_PUBLIC_API_BASE_URL:",
+    process.env.NEXT_PUBLIC_API_BASE_URL
+  );
   try {
     // Here you would typically make an API call to create the user
     const response = await fetch(
-      process.env.NEXT_PUBLIC_API_BASE_URL + "register",
+      `
+      ${process.env.NEXT_PUBLIC_API_BASE_URL}index.php?endpoint=register`,
       {
         method: "POST",
         headers: {
@@ -111,7 +121,7 @@ export async function login(prevState: any, formData: FormData) {
   try {
     // Here you would make the actual API call to authenticate the user
     const response = await fetch(
-      process.env.NEXT_PUBLIC_API_BASE_URL + "login",
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}index.php?endpoint=login`,
       {
         method: "POST",
         headers: {

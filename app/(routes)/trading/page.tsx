@@ -62,7 +62,7 @@ export default function TradingPage() {
       const fetchUserData = async () => {
         try {
           const response = await fetch(
-            process.env.NEXT_PUBLIC_API_BASE_URL + "getCurrentUser",
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}index.php?endpoint=getCurrentUser`,
             {
               method: "POST",
               headers: {
@@ -97,10 +97,8 @@ export default function TradingPage() {
   useEffect(() => {
     const fetchAccountSummary = async () => {
       try {
-        const response = await fetch(
-          process.env.NEXT_PUBLIC_API_BASE_URL +
-            `getUserFinancialSummary&user_id=${user?.id}`
-        );
+        const response = await fetch(`
+          ${process.env.NEXT_PUBLIC_API_BASE_URL}index.php?endpoint=getUserFinancialSummary&user_id=${user?.id}`);
         const result = await response.json();
         setUserAccountSummary(result.data);
       } catch (error) {
@@ -114,7 +112,7 @@ export default function TradingPage() {
   useEffect(() => {
     const fetchOrderBooks = async () => {
       const response = await fetch(
-        process.env.NEXT_PUBLIC_API_BASE_URL + "getOrderBook"
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}index.php?endpoint=getOrderBook`
       );
       const data = await response.json();
       setOrderBooks(data.data);
@@ -126,8 +124,7 @@ export default function TradingPage() {
   useEffect(() => {
     const fetchStockDetails = async () => {
       const response = await fetch(
-        process.env.NEXT_PUBLIC_API_BASE_URL +
-          `getStockDetails&stock_id=${gameState?.selectedStock?.id}`
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}index.php?endpoint=getStockDetails&stock_id=${gameState?.selectedStock?.id}`
       );
       const data = await response.json();
       setStockDetails(data.data);
@@ -141,7 +138,7 @@ export default function TradingPage() {
     const fetchStocks = async () => {
       try {
         const response = await fetch(
-          process.env.NEXT_PUBLIC_API_BASE_URL + "getAllStocks"
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}index.php?endpoint=getAllStocks`
         );
         const result = await response.json();
         setStocks(result.data);

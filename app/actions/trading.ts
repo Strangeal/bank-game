@@ -33,7 +33,7 @@ export async function buyShares(prevState: any, formData: FormData) {
   try {
     // Here you would make the actual API call with the ask price
     const response = await fetch(
-      process.env.NEXT_PUBLIC_API_BASE_URL + "buyStock",
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}index.php?endpoint=buyStock`,
       {
         method: "POST",
         headers: {
@@ -89,7 +89,7 @@ export async function sellShares(prevState: any, formData: FormData) {
   try {
     // Here you would make the actual API call with the bid price
     const response = await fetch(
-      process.env.NEXT_PUBLIC_API_BASE_URL + "sellStock",
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}index.php?endpoint=sellStock`,
       {
         method: "POST",
         headers: {
