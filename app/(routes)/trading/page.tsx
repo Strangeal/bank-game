@@ -72,12 +72,7 @@ export default function TradingPage() {
             }
           ); // Adjust the endpoint as needed
           const updatedUser = await response.json();
-          console.log("Updated user:", updatedUser);
-
           updateUserBalance(updatedUser?.user?.balance);
-          console.log("Updated user data storage");
-
-          // setUser(updatedUser.user);
         } catch (error) {
           console.error("Failed to fetch user data:", error);
         }
