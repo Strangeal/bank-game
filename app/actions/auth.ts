@@ -50,8 +50,7 @@ export async function signup(prevState: any, formData: FormData) {
   try {
     // Here you would typically make an API call to create the user
     const response = await fetch(
-      `
-      ${process.env.NEXT_PUBLIC_API_BASE_URL}index.php?endpoint=register`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}index.php?endpoint=register`,
       {
         method: "POST",
         headers: {
