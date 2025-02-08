@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
+
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -223,7 +223,6 @@ const Register = () => {
   const [formState, formAction] = useActionState(signup, {
     errors: {},
     message: "",
-    success: false,
   });
 
   const handleNext = () => {
