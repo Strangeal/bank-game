@@ -34,10 +34,6 @@ export async function signup(prevState: any, formData: FormData) {
     postalCode: formData.get("postalCode"),
   });
 
-  console.log("formData:", formData);
-
-  console.log("validatedFields data:", validatedFields);
-
   if (!validatedFields.success) {
     console.log("validatedFields data:", validatedFields);
 
