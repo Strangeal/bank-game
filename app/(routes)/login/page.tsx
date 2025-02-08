@@ -2,18 +2,27 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useActionState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { login } from "../../actions/auth";
+import { z } from "zod";
 import { useAuth } from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
+
+const LoginSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+});
 
 export default function LoginPage() {
   const router = useRouter();
   const { login: setAuth, user } = useAuth();
-  const [state, formAction] = useActionState(login, null);
+  const [formState, setFormState] = useState({
+    error: "",
+    success: false,
+    userData: null,
+  });
 
   // Redirect if user is already logged in
   useEffect(() => {
@@ -24,14 +33,72 @@ export default function LoginPage() {
 
   // Handle successful login
   useEffect(() => {
-    if (state?.success && state.userData) {
+    if (formState.success && formState.userData) {
       // Store user data and token
-      setAuth(state.userData);
+      setAuth(formState.userData);
       router.push("/");
       //  reload
       window.location.reload();
     }
-  }, [state, setAuth, router]);
+  }, [formState, setAuth, router]);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+
+    const validatedFields = LoginSchema.safeParse({
+      email: formData.get("email"),
+      password: formData.get("password"),
+    });
+
+    if (!validatedFields.success) {
+      setFormState({
+        error: "Invalid email or password",
+        success: false,
+        userData: null,
+      });
+      return;
+    }
+
+    const { email, password } = validatedFields.data;
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}index.php?endpoint=login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        }
+      );
+
+      const result = await response.json();
+      if (result.status === "success") {
+        setFormState({
+          error: "",
+          success: true,
+          userData: result.user,
+        });
+      } else {
+        setFormState({
+          error: "Invalid credentials",
+          success: false,
+          userData: null,
+        });
+      }
+    } catch (error) {
+      setFormState({
+        error: "Something went wrong!",
+        success: false,
+        userData: null,
+      });
+    }
+  };
 
   return (
     <div className="min-h-screen grid lg:grid-cols-2 pt-16">
@@ -67,7 +134,7 @@ export default function LoginPage() {
             </p>
           </div>
 
-          <form action={formAction} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
@@ -100,8 +167,10 @@ export default function LoginPage() {
               Sign in
             </Button>
 
-            {state?.error && (
-              <p className="text-red-500 text-sm text-center">{state.error}</p>
+            {formState?.error && (
+              <p className="text-red-500 text-sm text-center">
+                {formState.error}
+              </p>
             )}
           </form>
 

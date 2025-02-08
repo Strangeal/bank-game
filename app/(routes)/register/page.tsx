@@ -1,7 +1,6 @@
 "use client";
 
-import { useActionState, useState } from "react";
-
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -9,7 +8,7 @@ import { ChevronRight, ChevronLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { signup } from "../../actions/auth";
+import { z } from "zod";
 
 const steps = [
   {
@@ -218,11 +217,32 @@ const NavigationButtons = ({
   </div>
 );
 
+const SignupSchema = z
+  .object({
+    step: z.number(),
+    name: z.string().min(2, "Name must be at least 2 characters"),
+    email: z.string().email("Invalid email address"),
+    emailConfirm: z.string().email("Invalid email address"),
+    password: z.string().min(8, "Password must be at least 8 characters"),
+    passwordConfirm: z.string(),
+    dob: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format"),
+    postalCode: z.string().min(3, "Invalid postal code"),
+  })
+  .refine((data) => data.email === data.emailConfirm, {
+    message: "Emails don't match",
+    path: ["emailConfirm"],
+  })
+  .refine((data) => data.password === data.passwordConfirm, {
+    message: "Passwords don't match",
+    path: ["passwordConfirm"],
+  });
+
 const Register = () => {
   const [currentStep, setCurrentStep] = useState(1);
-  const [formState, formAction] = useActionState(signup, {
+  const [formState, setFormState] = useState({
     errors: {},
     message: "",
+    success: false,
   });
 
   const handleNext = () => {
@@ -234,6 +254,73 @@ const Register = () => {
   const handlePrevious = () => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
+    }
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+
+    const validatedFields = SignupSchema.safeParse({
+      step: Number.parseInt(formData.get("step") as string),
+      name: formData.get("name"),
+      email: formData.get("email"),
+      emailConfirm: formData.get("emailConfirm"),
+      password: formData.get("password"),
+      passwordConfirm: formData.get("passwordConfirm"),
+      dob: formData.get("dob"),
+      postalCode: formData.get("postalCode"),
+    });
+
+    if (!validatedFields.success) {
+      setFormState({
+        errors: validatedFields.error.flatten().fieldErrors,
+        message: "Invalid fields",
+        success: false,
+      });
+      return;
+    }
+
+    const { name, email, password, dob, postalCode } = validatedFields.data;
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}index.php?endpoint=register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            password,
+            date_of_birth: dob,
+            postal_code: postalCode,
+          }),
+        }
+      );
+
+      const result = await response.json();
+      if (result.status === "success") {
+        setFormState({
+          errors: {},
+          message: result.message,
+          success: true,
+        });
+      } else {
+        setFormState({
+          errors: {},
+          message: result.message,
+          success: false,
+        });
+      }
+    } catch (error) {
+      setFormState({
+        errors: {},
+        message: "Something went wrong!",
+        success: false,
+      });
     }
   };
 
@@ -264,7 +351,7 @@ const Register = () => {
       <div className="flex flex-col justify-center p-8">
         <div className="w-full max-w-md mx-auto space-y-8">
           <ProgressIndicator currentStep={currentStep} />
-          <form action={formAction} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <input type="hidden" name="step" value={currentStep} />
             <StepForm currentStep={currentStep} formState={formState} />
             <NavigationButtons
