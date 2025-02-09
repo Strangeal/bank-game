@@ -74,6 +74,16 @@ This project is a small "serious game" developed for a bank to educate users abo
    - Start Apache and MySQL from the XAMPP control panel.
    - Configure your PHP and MySQL settings as needed.
 
+### Setting Up MySQL on XAMPP
+
+1. Open the XAMPP folder in your local disk.
+2. Find and open the `htdocs` folder.
+3. Add the project backend into the `htdocs` folder.
+4. Open your browser and navigate to `http://localhost` to access the XAMPP dashboard.
+5. Click on `phpMyAdmin`.
+6. Create a new database with a name of your choice and import the SQL file.
+7. Once uploaded successfully, locate the `db.php` file in your backend and change the `db` variable to the name of your database.
+
 ### Running the Application
 
 1. Start the development server:
